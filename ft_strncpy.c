@@ -6,7 +6,7 @@
 /*   By: srakuma <srakuma@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/16 23:14:42 by srakuma           #+#    #+#             */
-/*   Updated: 2021/09/17 17:50:12 by srakuma          ###   ########.fr       */
+/*   Updated: 2021/10/01 22:12:15 by srakuma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strncpy(char *dest, char *src, unsigned int n)
 		dest[i] = src[i];
 		i++;
 	}
-	if (i < n)
-		dest[i] = '\0';
+	while (i < n)
+		dest[i++] = '\0';
 	return (dest);
 }
