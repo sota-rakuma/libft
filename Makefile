@@ -6,7 +6,7 @@
 #    By: srakuma <srakuma@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/10 17:18:54 by srakuma           #+#    #+#              #
-#    Updated: 2021/04/30 22:28:32 by srakuma          ###   ########.fr        #
+#    Updated: 2022/06/03 01:09:06 by srakuma          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,8 +56,10 @@ BONUS_SRCS = ft_lstnew.c \
 		ft_lstclear.c \
 		ft_lstiter.c \
 		ft_lstmap.c
-REG_OBJS = $(SRCS:.c=.o)
-BONUS_OBJS = $(BONUS_SRCS:.c=.o)
+REG_OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
+BONUS_OBJS = $(addprefix $(OBJS_DIR)/, $(BONUS_SRCS:.c=.o))
+OBJS_DIR=obj
+DEPS_DIR=deps
 DEPS = $(SRCS:.c=.d) $(BONUS_SRCS:.c=.d)
 
 ifdef WITH_BONUS
@@ -69,7 +71,7 @@ endif
 .PHONY: all
 all: $(NAME)
 
-$(NAME): $(OBJ_FILES)
+$(NAME): $(OBJS_DIR) $(DEPS_DIR) $(OBJ_FILES)
 	ar -cr $(NAME) $(OBJ_FILES)
 	ranlib $(NAME)
 
@@ -77,14 +79,20 @@ $(NAME): $(OBJ_FILES)
 bonus:
 	$(MAKE) WITH_BONUS=1 all
 
-%.o: %.c
+$(OBJS_DIR):
+	mkdir -p $(OBJS_DIR)
+
+$(DEPS_DIR):
+	mkdir -p $(DEPS_DIR)
+
+$(OBJS_DIR)/%.o: %.c
 		${CC} ${CFLAGS} -c -MMD -MP -o $@ $<
 
 -include $(DEPS)
 
 .PHONY: clean
 clean:
-	rm -f $(REG_OBJS) $(BONUS_OBJS) $(DEPS)
+	rm -fr $(REG_OBJS) $(OBJS_DIR) $(DEPS_DIR)
 
 .PHONY: fclean
 fclean: clean
